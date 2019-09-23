@@ -47,7 +47,23 @@ shinyUI(
                 selectInput("direct", choices = c("undirected", "directed"),
                             selected = "undirected",
                             label = "Directed Graph ?"),
+                conditionalPanel(
+                  condition = "input.direct == 'directed'",
+                  selectInput("community_option", label = "Type of Community Detection ?",
+                              choices = c("edge betweeness", "random walk", "spinglass", 
+                                          "label propagation", "infomap"),
+                              selected = "edge betweeness")
+                ),
+                conditionalPanel(
+                  condition = "input.direct == 'undirected'",
+                  selectInput("community_option", label = "Type of Community Detection ?",
+                              choices = c('edge betweeness', 'random walk', 'fast greedy', 'eigen vector',
+                                          'multilevel', 'spinglass', 'label propagation', 'infomap'),
+                              selected = "edge betweeness")
+                ),
                 numericInput("node_size", label = "Node Size ?",
+                             min = 0, max = NA, value = 10),
+                numericInput("edge_size", label = "Edge Size ?",
                              min = 0, max = NA, value = 10),
                 actionButton("submit", "Plot")
                 ),
@@ -60,7 +76,7 @@ shinyUI(
                    )),
             column(width = 12,
                    visNetworkOutput("plot1",
-                                    height = 500)
+                                    height = 1000)
                                          )
                               )
                    )

@@ -92,11 +92,11 @@ shinyServer(function(input, output, session) {
         
         if(input$option >= 1){
             
-            g = graph_from_adjacency_matrix(adj(), mode = input$direct, diag = F)
+            g = graph_from_adjacency_matrix(adj(), mode = input$direct, diag = F, weighted = T)
             
         }else{
             
-            g = graph_from_adjacency_matrix(adj(), mode = input$direct, diag = F)
+            g = graph_from_adjacency_matrix(adj(), mode = input$direct, diag = F, weighted = T)
             
         }
         
@@ -155,6 +155,50 @@ shinyServer(function(input, output, session) {
                 
             }
         }
+        
+        if(input$community_option == "edge betweeness"){
+            
+            com = edge.betweenness.community(g, directed = ifelse(input$direct=="directed", T, F))
+            V(g)$color = com$membership
+            
+        }else if(input$community_option == "random walk"){
+            
+            com = walktrap.community(g)
+            V(g)$color = com$membership
+            
+        }else if(input$community_option == "fast greedy"){
+            
+            com = fastgreedy.community(g)
+            V(g)$color = com$membership
+            
+        }else if(input$community_option == "eigen vector"){
+            
+            com = leading.eigenvector.community(g)
+            V(g)$color = com$membership
+            
+        }else if(input$community_option == "multilevel"){
+            
+            com = multilevel.community(g, weights = E(g)$weight)
+            V(g)$color = com$membership
+            
+        }else if(input$community_option == "spinglass"){
+            
+            com = spinglass.community(g, weights = E(g)$weight, spins = 15)
+            V(g)$color = com$membership
+            
+        }else if(input$community_option == "label propagation"){
+            
+            com = label.propagation.community(g, weights = E(g)$weight)
+            V(g)$color = com$membership
+            
+        }else{
+            
+            com = infomap.community(g, e.weights = E(g)$weight)
+            V(g)$color = com$membership
+            
+        }
+        
+        set.seed(123)
         
         output$plot1 = renderVisNetwork({
                 
