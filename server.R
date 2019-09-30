@@ -220,6 +220,16 @@ shinyServer(function(input, output, session) {
             
         })
         
+        com_data = data.frame(membership = com$membership, names = com$names)
+        com_data = com_data[order(com_data$membership), ]
+        rownames(com_data) = 1:nrow(com_data)
+        
+        output$table4 = renderDataTable({
+            
+            print(com_data)
+            
+        })
+        
     })
     
     session$onSessionEnded(function(){

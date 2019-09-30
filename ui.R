@@ -13,7 +13,6 @@ shinyUI(
                               "text/comma-separated-values, text/plain",
                               ".csv")
                 ),
-                h4("There must be a A_i3 weighted edge from A_i2 to A_i1"),
                 tags$hr(),
                 selectInput("option", choices = c("Yes", "No"),
                             selected = "No",
@@ -72,7 +71,8 @@ shinyUI(
                    tabsetPanel(type = "tabs",
                                tabPanel("Raw Data", dataTableOutput("table1")),
                                tabPanel("Adjacent Matrix", tableOutput("table2")),
-                               tabPanel("centrality", dataTableOutput("table3"))
+                               tabPanel("centrality", dataTableOutput("table3")),
+                               tabPanel("community", dataTableOutput("table4"))
                    )),
             column(width = 12,
                    visNetworkOutput("plot1",
